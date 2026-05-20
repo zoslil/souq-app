@@ -9,37 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 📥 تحميل المشروع
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 🔥 Node 22 (حل مشكلة Capacitor)
+      # 🟢 Node (مهم لـ Capacitor 8)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # 📦 تثبيت الحزم
       - name: Install dependencies
         run: npm install
 
-      # 🔥 Java 17 (المناسب لـ Gradle)
+      # ☕ Java 21 (حل خطأ invalid source release: 21)
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
-      # 🔥 Sync Capacitor
+      # 🔄 مزامنة Capacitor
       - name: Sync Capacitor
         run: npx cap sync android
 
-      # 🔥 Build APK
+      # 🧱 بناء APK
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      # 📦 Upload APK
+      # 📦 رفع APK كـ Artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
